@@ -65,7 +65,7 @@ const pr = [
     _id: "4",
     name: "E-Learning",
     desc: "E-Learning app built with Laravel and ReactJS",
-    tags: ["php", "laravel", "react", "sql"],
+    tags: ["php", "laravel", "react", "sql", "bootstrap"],
     image: "/img/reavelearning/el9c.png",
     images: [
       "/img/reavelearning/el1.png",
@@ -182,7 +182,7 @@ try {
   darkMode = JSON.parse(localStorage.getItem("darkMode"));
 } catch (error) {}
 
-const name = "Hafid Fadilah Septiawan";
+const name = "Handoko Fikriansyah";
 // const about =
 //   "Hello! My name is Paijo. Born and raised in Yogyakarta. I am always curious and willing to learn new things.";
 const github = "https://github.com/hafidd";
@@ -402,7 +402,7 @@ function About({ aboutRef, apalah, scrollToProject }) {
         <div className={!apalah ? "lg:self-start" : ""}>
           <a href={github} target="_blank" rel="noreferrer">
             <button className={"mr-2 py-2 px-3 border-2 rounded-md "}>
-              <i className="fa-brands fa-github"></i> Github repository
+              <i className="fa-brands fa-github"></i> Github
             </button>
           </a>
           <button
@@ -449,7 +449,7 @@ function Projects({ projects, tcs, setProject, projectRef }) {
     <li className="m-auto flex p-1 w-full md:w-1/2">
       <div className="rounded-md m-auto w-full bg-white border-2 dark:border-none dark:bg-slate-700">
         <div
-          className="p-1 hover:cursor-pointer"
+          className="p-1 relative hover:cursor-pointer group"
           onClick={() => setProject(project)}
         >
           <img
@@ -457,6 +457,24 @@ function Projects({ projects, tcs, setProject, projectRef }) {
             alt={project.image}
             className="rounded-md "
           />
+          {/* tags */}
+          <div
+            className="z-20 hidden absolute top-0 left-0 w-full h-full
+            group-hover:flex flex-wrap justify-center items-center bg-black bg-opacity-20 
+          "
+          >
+            <div className="flex flex-wrap px-1 justify-center">
+              {project.tags.map((tag) => (
+                <span
+                  className="px-2 rounded-sm m-1 bg-black bg-opacity-70 border border-gray-500 tracking-wider"
+                  key={project._id + "_" + tag}
+                >
+                  {tcs.find((t) => t.id === tag).text}
+                </span>
+              ))}
+            </div>
+          </div>
+          {/* end tags */}
         </div>
         <div className="flex flex-col p-4">
           <div className="uppercase text-xl font-semibold tracking-wide">
