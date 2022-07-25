@@ -1,12 +1,14 @@
 import { useMemo } from "react";
 import { useRef } from "react";
 import { useEffect, useState } from "react";
+import { Parallax, ParallaxProvider } from "react-scroll-parallax";
+import { Helmet } from "react-helmet";
 
 const pr = [
   {
     _id: "2",
     name: "Kanban Board",
-    desc: "Trello clone built with MERN STACK",
+    desc: "Trello clone built with MERN + Socket.IO",
     tags: ["js", "node", "express", "react", "mongo", "sio"],
     image: "/img/mern-kanboard/mk2c.png",
     images: [
@@ -45,7 +47,7 @@ const pr = [
   {
     _id: "1",
     name: "Simple Chat",
-    desc: "Realtime chatting app built with MERN STACK",
+    desc: "Realtime chatting app built with MERN + Socket.IO",
     tags: ["js", "node", "express", "react", "mongo", "sio", "bootstrap"],
     image: "/img/mern-chat/mc2c.png",
     images: [
@@ -182,7 +184,8 @@ try {
   darkMode = JSON.parse(localStorage.getItem("darkMode"));
 } catch (error) {}
 
-const name = "Handoko Fikriansyah";
+const name = "Hafid Fadilah Septiawan";
+const title = "Hafid F Septiawan";
 // const about =
 //   "Hello! My name is Paijo. Born and raised in Yogyakarta. I am always curious and willing to learn new things.";
 const github = "https://github.com/hafidd";
@@ -221,40 +224,47 @@ function App() {
     projectRef.current.scrollIntoView({ behavior: "smooth" });
 
   return (
-    <div className={`${dark ? "dark" : ""}`}>
-      {/* Modal detail projek */}
-      {project._id && (
-        <>
-          <div className="fixed w-full h-screen bg-black z-10 bg-opacity-70"></div>
-          <Project project={project} setProject={setProject} />
-        </>
-      )}
-      {/* Menu */}
-      <Menu
-        apalah={apalah}
-        scrolling={scrolling}
-        dark={dark}
-        setDark={setDark}
-        scrollToAbout={scrollToAbout}
-        scrollToProject={scrollToProject}
-      />
-      {/* Konten */}
-      <div
-        className={`bg-slate-100 text-slate-900 dark:bg-slate-800 dark:text-slate-200 z-0`}
-      >
-        <About
-          aboutRef={aboutRef}
-          apalah={apalah}
-          scrollToProject={scrollToProject}
-        />
-        <Projects
-          projectRef={projectRef}
-          projects={projects}
-          tcs={tcs}
-          setProject={setProject}
-        />
-      </div>
-    </div>
+    <>
+      <Helmet>
+        <title>{title}</title>
+      </Helmet>
+      <ParallaxProvider>
+        <div className={`${dark ? "dark" : ""}`}>
+          {/* Modal detail projek */}
+          {project._id && (
+            <>
+              <div className="fixed w-full h-screen bg-black z-10 bg-opacity-70"></div>
+              <Project project={project} setProject={setProject} />
+            </>
+          )}
+          {/* Menu */}
+          <Menu
+            apalah={apalah}
+            scrolling={scrolling}
+            dark={dark}
+            setDark={setDark}
+            scrollToAbout={scrollToAbout}
+            scrollToProject={scrollToProject}
+          />
+          {/* Konten */}
+          <div
+            className={`bg-slate-100 text-slate-900 dark:bg-slate-800 dark:text-slate-200 z-0`}
+          >
+            <About
+              aboutRef={aboutRef}
+              apalah={apalah}
+              scrollToProject={scrollToProject}
+            />
+            <Projects
+              projectRef={projectRef}
+              projects={projects}
+              tcs={tcs}
+              setProject={setProject}
+            />
+          </div>
+        </div>
+      </ParallaxProvider>
+    </>
   );
 }
 
@@ -268,30 +278,30 @@ function Menu({
 }) {
   return (
     <div
-      className={`fixed flex md:flex-col items-center justify-center h-16 md:h-screen w-full md:w-14 lg:ml-4 dark:text-slate-100 ${
+      className={`z-40 fixed flex md:flex-col items-center justify-center h-16 md:h-screen w-full md:w-14 lg:ml-4 dark:text-slate-100 ${
         apalah &&
         "bg-black bg-opacity-80 md:bg-transparent text-white md:text-black"
       }`}
     >
       <button
-        className={`text-center md:block p-2 px-3 md:mb-4 ${
-          scrolling && "bg-black bg-opacity-30 rounded-md"
+        className={`mr-2 md:mr-0 text-center md:block p-2 px-3 md:mb-4 ${
+          scrolling && "bg-black bg-opacity-100 rounded-md"
         }`}
-        onClick={(e) => scrollToAbout()}
+        onClick={scrollToAbout}
       >
         <i className="fa-solid fa-user"></i>
       </button>
       <button
-        className={`text-center md:block p-2 px-3 md:mb-4 ${
-          scrolling && "bg-black bg-opacity-30 rounded-md"
+        className={`mr-2 md:mr-0 text-center md:block p-2 px-3 md:mb-4 ${
+          scrolling && "bg-black bg-opacity-100 rounded-md"
         }`}
-        onClick={(e) => scrollToProject()}
+        onClick={scrollToProject}
       >
         <i className="fa-solid fa-list"></i>
       </button>
       <button
         className={`text-center md:block p-2 px-3 md:mb-4 ${
-          scrolling && "bg-black bg-opacity-30 rounded-md"
+          scrolling && "bg-black bg-opacity-100 rounded-md"
         }`}
         onClick={(e) =>
           setDark((prev) => {
@@ -327,7 +337,7 @@ function Project({ project = {}, setProject }) {
             <img
               src={project.images[imgIndex]}
               alt={project.images[imgIndex]}
-              className="min-h-[50vh] max-h-[60vh] max-w-[80vw]"
+              className="md:min-h-[50vh] max-h-[60vh] max-w-[80vw]"
               loading="lazy"
             />
             {project.images.length > 1 && (
@@ -388,31 +398,35 @@ function About({ aboutRef, apalah, scrollToProject }) {
   return (
     <div
       ref={aboutRef}
-      className="flex flex-col items-center justify-center h-screen w-full"
+      className="flex flex-col items-center justify-center h-screen w-full overflow-hidden"
     >
-      <div className="flex flex-col items-center justify-center">
-        <p className="lg:self-start te text-lg mb-1">Hi!, my name is</p>
-        <h2 className="font-semibold mb-6 text-center text-5xl md:text-6xl lg:text-7xl lg:self-start spaci">
-          {name || "My name"}
-        </h2>
-        {/* <p className="font-semibold lg:self-start">About me .</p>
+      <Parallax speed={-20}>
+        <div className="flex flex-col items-center justify-center py-10">
+          <p className="lg:self-start te text-lg mb-1">Hi!, my name is</p>
+          <h2 className="font-semibold mb-6 text-center text-5xl md:text-6xl lg:text-7xl lg:self-start spaci">
+            {name || "My name"}
+          </h2>
+          {/* <p className="font-semibold lg:self-start">About me .</p>
         <p className="mb-3 indent-7 p-5 lg:self-start lg:p-0">
           {about || "about me..."}
         </p> */}
-        <div className={!apalah ? "lg:self-start" : ""}>
-          <a href={github} target="_blank" rel="noreferrer">
-            <button className={"mr-2 py-2 px-3 border-2 rounded-md "}>
-              <i className="fa-brands fa-github"></i> Github
+          <div className={!apalah ? "lg:self-start" : ""}>
+            <a href={github} target="_blank" rel="noreferrer">
+              <button className={"mr-2 py-2 px-3 border-2 rounded-md "}>
+                <i className="fa-brands fa-github"></i> Github
+              </button>
+            </a>
+            <button
+              className={
+                "py-2 px-3 border-2 rounded-md " + (apalah && " hidden")
+              }
+              onClick={scrollToProject}
+            >
+              <i className="fa-solid fa-list"></i> Projects
             </button>
-          </a>
-          <button
-            className={"py-2 px-3 border-2 rounded-md " + (apalah && " hidden")}
-            onClick={() => scrollToProject()}
-          >
-            <i className="fa-solid fa-list"></i> Projects
-          </button>
+          </div>
         </div>
-      </div>
+      </Parallax>
     </div>
   );
 }
@@ -459,14 +473,14 @@ function Projects({ projects, tcs, setProject, projectRef }) {
           />
           {/* tags */}
           <div
-            className="z-20 hidden absolute top-0 left-0 w-full h-full
+            className="z-10 hidden absolute top-0 left-0 w-full h-full
             group-hover:flex flex-wrap justify-center items-center bg-black bg-opacity-20 
           "
           >
             <div className="flex flex-wrap px-1 justify-center">
               {project.tags.map((tag) => (
                 <span
-                  className="px-2 rounded-sm m-1 bg-black bg-opacity-70 border border-gray-500 tracking-wider"
+                  className="px-2 rounded-sm m-1 bg-white dark:bg-black bg-opacity-70 border border-gray-500 tracking-wider"
                   key={project._id + "_" + tag}
                 >
                   {tcs.find((t) => t.id === tag).text}
@@ -526,7 +540,7 @@ function Projects({ projects, tcs, setProject, projectRef }) {
   return (
     <div
       ref={projectRef}
-      className="md:px-24 lg:px-48 py-4 dark:bg-slate-900 min-h-screen"
+      className="md:px-24 lg:px-48 py-4 bg-slate-50 dark:bg-slate-900 min-h-screen"
     >
       <div className="flex flex-wrap justify-center">
         <Tags />
